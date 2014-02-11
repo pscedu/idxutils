@@ -5,7 +5,7 @@ import os
 import struct
 import sys
 
-# usage: idxsearch.py -k 8 -v 8 869a mkidx.out.00
+# usage: idxsearch.py -k 8 869a mkidx.out.00
 parser = argparse.ArgumentParser()
 
 parser.add_argument("-k", "--key-size", type=int, default = 8, help="length of key")
@@ -30,11 +30,15 @@ chunk = chunks / 2
 fd = os.open(args.file, os.O_RDONLY)
 os.lseek(fd, chunk*chunk_size, os.SEEK_SET)
 
+max = chunks
+min = 0
 while 0 <= chunk and chunk < chunks:
     (key, value) = read_chunk(fd)
     if args.key > key:
-	chunk = (chunk + chunks) / 2	
+        min = chunk
+        chunk = (chunk + max) / 2	
     elif args.key < key:
+        max = chunk
         chunk = chunk / 2 
     else:
         print value
