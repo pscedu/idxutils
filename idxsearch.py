@@ -2,14 +2,13 @@
 
 import argparse, os, struct, sys
 
-
 # usage: idxsearch.py -k 8 869a mkidx.out.00
 parser = argparse.ArgumentParser()
 
 parser.add_argument("-k", "--key-size", type=int, default = 8, help="length of key")
 parser.add_argument("-v", "--val-size", type=int, default = 8, help="length of value")
 parser.add_argument("key")
-parser.add_argument("files", nargs="+")
+parser.add_argument("files", default = [], nargs="+")
 
 args = parser.parse_args()
 
@@ -31,7 +30,7 @@ for f in args.files:
     
     max = chunks
     min = 0
-    while 0 <= chunk and chunk < chunks:
+    while 0 <= chunk and chunk < chunks-1:
         (key, value) = read_chunk(fd)
         if args.key > key:
             min = chunk
@@ -45,5 +44,4 @@ for f in args.files:
             sys.exit(0)
         os.lseek(fd, chunk * chunk_size, os.SEEK_SET)
     os.close(fd)
-    print "key not found."
-    sys.exit(1)
+print "key not found."
