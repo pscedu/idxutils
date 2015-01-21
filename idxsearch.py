@@ -51,7 +51,7 @@ for f in args.files:
         (key, value) = read_chunk(fd)
 
         if key == args.key:
-            print "found", key
+            print value
             found = True
             break
         elif key < args.key:
@@ -61,7 +61,8 @@ for f in args.files:
     os.close(fd)
 
     if found:
-        sys.exit(1)
+        sys.exit(0)
 
 if not found:
     print "not found"
+    sys.exit(1)
